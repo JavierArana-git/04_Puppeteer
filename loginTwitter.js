@@ -9,6 +9,8 @@
 const puppeteer = require("puppeteer");
 const prompt = require("prompt-sync")();
 const urlLogin = "https://twitter.com/i/flow/login";
+const user = "ejemplo@gmail.com";
+const password = "123456";
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -28,10 +30,10 @@ const urlLogin = "https://twitter.com/i/flow/login";
   });
   console.log("\n***************************** INICIO  TEST *****************************");
   await page.goto(urlLogin);
-  await writeInput("#layers > div:nth-child(2) > div > div > div > div > div > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1pi2tsx.r-1777fci.r-1xcajam.r-ipm5af.r-g6jmlv > div.css-1dbjc4n.r-1867qdf.r-1wbh5a2.r-kwpbio.r-rsyp9y.r-1pjcn9w.r-1279nm1.r-htvplk.r-1udh08x > div > div > div.css-1dbjc4n.r-14lw9ot.r-6koalj.r-16y2uox.r-1wbh5a2 > div.css-1dbjc4n.r-16y2uox.r-1wbh5a2.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > div > div.css-1dbjc4n.r-mk0yit.r-1f1sjgu.r-13qz1uu > label > div > div.css-1dbjc4n.r-18u37iz.r-16y2uox.r-1wbh5a2.r-1wzrnnt.r-1udh08x.r-xd6kpl.r-1pn2ns4.r-ttdzmv > div > input",user,page,"",user);
+  await writeInput("#layers > div:nth-child(2) > div > div > div > div > div > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1pi2tsx.r-1777fci.r-1xcajam.r-ipm5af.r-g6jmlv > div.css-1dbjc4n.r-1867qdf.r-1wbh5a2.r-kwpbio.r-rsyp9y.r-1pjcn9w.r-1279nm1.r-htvplk.r-1udh08x > div > div > div.css-1dbjc4n.r-14lw9ot.r-6koalj.r-16y2uox.r-1wbh5a2 > div.css-1dbjc4n.r-16y2uox.r-1wbh5a2.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > div > div.css-1dbjc4n.r-mk0yit.r-1f1sjgu.r-13qz1uu > label > div > div.css-1dbjc4n.r-18u37iz.r-16y2uox.r-1wbh5a2.r-1wzrnnt.r-1udh08x.r-xd6kpl.r-1pn2ns4.r-ttdzmv > div > input",user,page,"",user,"Texto Usuario");
 
 })();
-async function writeInput(selector, valueToWrite, page, checkLastValue, checkNewValue) {
+async function writeInput(selector, valueToWrite, page, checkLastValue, checkNewValue, alias="") {
   try {
     element = await page.waitForSelector(selector, {
       timeout: 1500,
@@ -51,7 +53,11 @@ async function writeInput(selector, valueToWrite, page, checkLastValue, checkNew
       return input.value;
     });
     //Result Report
-    msg = `Cambio de valor en "${selector}": "${lastValue}" -> "${writtenValue}"`;
+    if (alias){
+      msg = `Cambio de valor en "${alias}": "${lastValue}" -> "${writtenValue}"`;
+    }else{
+      msg = `Cambio de valor en "${selector}": "${lastValue}" -> "${writtenValue}"`;
+    }
     //Check written value
     if (lastValue === checkLastValue && writtenValue == checkNewValue) {
       msgLog(msg, true);
@@ -59,7 +65,11 @@ async function writeInput(selector, valueToWrite, page, checkLastValue, checkNew
       msgLog(msg, false);
     }
   } catch (err) {
-    msg = `Selector "${selector}" no encontrado`;
+    if (alias){
+      msg = `Selector "${alias}" no encontrado`;
+    }else{
+      msg = `Selector "${selector}" no encontrado`;
+    }
     msgLog(msg, false);
   }
 }
