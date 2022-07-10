@@ -30,8 +30,9 @@ const password = "123456";
   });
   console.log("\n***************************** INICIO  TEST *****************************");
   await page.goto(urlLogin);
-  await writeInput("#layers > div:nth-child(2) > div > div > div > div > div > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1pi2tsx.r-1777fci.r-1xcajam.r-ipm5af.r-g6jmlv > div.css-1dbjc4n.r-1867qdf.r-1wbh5a2.r-kwpbio.r-rsyp9y.r-1pjcn9w.r-1279nm1.r-htvplk.r-1udh08x > div > div > div.css-1dbjc4n.r-14lw9ot.r-6koalj.r-16y2uox.r-1wbh5a2 > div.css-1dbjc4n.r-16y2uox.r-1wbh5a2.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > div > div.css-1dbjc4n.r-mk0yit.r-1f1sjgu.r-13qz1uu > label > div > div.css-1dbjc4n.r-18u37iz.r-16y2uox.r-1wbh5a2.r-1wzrnnt.r-1udh08x.r-xd6kpl.r-1pn2ns4.r-ttdzmv > div > input",user,page,"",user,"Texto Usuario");
-
+  delay(300);
+  await clickInSelector("#layers > div > div > div > div > div > div > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1pi2tsx.r-1777fci.r-1xcajam.r-ipm5af.r-g6jmlv > div.css-1dbjc4n.r-1867qdf.r-1wbh5a2.r-kwpbio.r-rsyp9y.r-1pjcn9w.r-1279nm1.r-htvplk.r-1udh08x > div > div > div.css-1dbjc4n.r-14lw9ot.r-6koalj.r-16y2uox.r-1wbh5a2 > div.css-1dbjc4n.r-16y2uox.r-1wbh5a2.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > div > div.css-1dbjc4n.r-mk0yit.r-1f1sjgu.r-13qz1uu > label > div > div.css-1dbjc4n.r-18u37iz.r-16y2uox.r-1wbh5a2.r-1wzrnnt.r-1udh08x.r-xd6kpl.r-1pn2ns4.r-ttdzmv", page,"Texto Usuario"); //Menú Artículo
+  await writeInput("#layers > div > div > div > div > div > div > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1pi2tsx.r-1777fci.r-1xcajam.r-ipm5af.r-g6jmlv > div.css-1dbjc4n.r-1867qdf.r-1wbh5a2.r-kwpbio.r-rsyp9y.r-1pjcn9w.r-1279nm1.r-htvplk.r-1udh08x > div > div > div.css-1dbjc4n.r-14lw9ot.r-6koalj.r-16y2uox.r-1wbh5a2 > div.css-1dbjc4n.r-16y2uox.r-1wbh5a2.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > div > div.css-1dbjc4n.r-mk0yit.r-1f1sjgu.r-13qz1uu > label > div > div.css-1dbjc4n.r-18u37iz.r-16y2uox.r-1wbh5a2.r-1wzrnnt.r-1udh08x.r-xd6kpl.r-1pn2ns4.r-ttdzmv",user,page,"",user,"Texto Usuario");
 })();
 async function writeInput(selector, valueToWrite, page, checkLastValue, checkNewValue, alias="") {
   try {
@@ -71,5 +72,43 @@ async function writeInput(selector, valueToWrite, page, checkLastValue, checkNew
       msg = `Selector "${selector}" no encontrado`;
     }
     msgLog(msg, false);
+  }
+}
+function msgLog(report, result) {
+  const lenghtLimit = 70;
+  for (pos = report.length; pos < lenghtLimit; pos++) {
+    report = report + ".";
+  }
+  if (result == true) {
+    console.log(report + "\u001b[32mOK\x1b[0m");
+  } else {
+    console.log(report + "\u001b[31mNOK\x1b[0m");
+  }
+}
+function delay(time) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
+}
+async function clickInSelector(selector, page, alias = "") {
+  var msgSelector = `Busqueda de selector: ${selector}`;
+  try {
+    element = await page.waitForSelector(selector, {
+      timeout: 3000,
+    });
+    if (alias) {
+      msgSelector = `Pulsado en el selector: "${alias}"`;
+    } else {
+      msgSelector = `Pulsado en el selector: "${selector}"`;
+    }
+    msgLog(msgSelector, true);
+    await element.click();
+  } catch (err) {
+    if (alias) {
+      msgSelector = `Búsqueda de selector: "${alias}"`;
+    } else {
+      msgSelector = `Búsqueda de selector: "${selector}"`;
+    }
+    msgLog(msgSelector, false);
   }
 }
