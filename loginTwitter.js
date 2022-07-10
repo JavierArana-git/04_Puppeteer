@@ -12,6 +12,8 @@ const urlLogin = "https://twitter.com/i/flow/login";
 const user = "ejemplo@gmail.com";
 const password = "123456";
 
+var user = prompt("User: ");
+var password = prompt("Password: ");
 (async () => {
   const browser = await puppeteer.launch({
     args : [
